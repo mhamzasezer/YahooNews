@@ -1,0 +1,12 @@
+{
+  "name": "yahoonews",
+  "version": "1.0.0",
+  "description": "Yahoo news からその日の重要なニュース取得し、Lineへメッセージを送信するツール",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
