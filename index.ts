@@ -47,7 +47,7 @@ async function fetchDataFromUrl() {
 fetchDataFromUrl()
     .then(data => {
         data.forEach((category, index) => {
-            console.log("Data for category ${index + 1}:", category);
+            console.log(`Data for category ${index + 1}:`, category);
             
     });
 });
