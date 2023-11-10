@@ -20,6 +20,7 @@
 // Also run in Microsoft Azure if possible.
 
 import axios from "axios";
+import cheerio from "cheerio";
 
 const catagoriesUrls = [
     "https://news.yahoo.co.jp/ranking/comment/domestic",
@@ -30,11 +31,12 @@ const catagoriesUrls = [
     "https://news.yahoo.co.jp/ranking/comment/it-science"
 ];    
 
-async function fetchDataFromUrl() {
+async function fetchDataAndParse() {
     try{
         const categoryData: unknown[] = [];
         for (const url of catagoriesUrls){
             const response = await axios.get(url);
+            const parsedData = parseHTML(response.data);
             categoryData.push(response.data);//Store the html data
         }
         return categoryData;    
@@ -44,7 +46,24 @@ async function fetchDataFromUrl() {
     }
 }
 
-fetchDataFromUrl()
+
+function parseHTML(html: string): object {
+    const $ = cheerio.load(html);
+    
+    // Extracting headlines and links
+    const headlines = $(".newsFeed_item_title").map((index, element) => $(element).text()).get();
+    const links = $(".newsFeed_item_link").map((index, element) => $(element).attr("href")).get();
+
+    const parsedData = {
+        headlines,
+        links,
+    };
+
+    return parsedData;
+}
+
+
+fetchDataAndParse()
     .then(data => {
         data.forEach((category, index) => {
             console.log(`Data for category ${index + 1}:`, category);
